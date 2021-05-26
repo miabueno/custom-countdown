@@ -1,10 +1,12 @@
-// DOM Elements
+// DOM Element Containers to switch with hidden attributes
 const inputContainer = document.getElementById('input-container');
 const countdownContainer = document.getElementById('countdown');
-const dateElement = document.getElementById('date-picker');
 
 // Form Element
 const countdownForm = document.forms['countdown-form'];
+
+// Time Interval Status
+let countdownActive;
 
 // given Date object, returns str format YYYY-MM-DD
 const convertDateToStr = (dateObj) => {
@@ -14,10 +16,10 @@ const convertDateToStr = (dateObj) => {
     return dateString;
 };
 
-// Set Date Input Min with Today's Date
-// Date Today (now)
+// Set Date Input minimum with Today's Date
 const today = new Date();
 const todayDateStr = convertDateToStr(today);
+const dateElement = document.getElementById('date-picker');
 dateElement.setAttribute('min', todayDateStr);
 
 // Helper - Calculate Time Remaining for Countdown
@@ -43,24 +45,25 @@ const calculateRemainingTime = (futureDateMsec) => {
     };
 };
 
-// Handle Countdown Values
+// Handle Countdown Values + Update DOM
 const populateCountdown = (dateStr) => {
     const futureDate = new Date(dateStr);
-    console.log(futureDate);
     const futureDateMsec = futureDate.getTime();
 
-    const { days, hours, minutes, seconds } = calculateRemainingTime(futureDateMsec);
+    countdownActive = setInterval(() => {
+        const { days, hours, minutes, seconds } = calculateRemainingTime(futureDateMsec);
 
-    const timeElements = document.getElementsByTagName('span');
-    timeElements[0].textContent = `${days}`;
-    timeElements[1].textContent = `${hours}`;
-    timeElements[2].textContent = `${minutes}`;
-    timeElements[3].textContent = `${seconds}`;
+        const timeElements = document.getElementsByTagName('span');
+        timeElements[0].textContent = `${days}`;
+        timeElements[1].textContent = `${hours}`;
+        timeElements[2].textContent = `${minutes}`;
+        timeElements[3].textContent = `${seconds}`;
 
-    console.log(days, hours, minutes, seconds);
+        console.log(days, hours, minutes, seconds);
+    }, 1000);
 };
 
-// Handle Title
+// Handle Title + Update DOM
 const updateTitle = (titleStr) => {
     document.getElementById('countdown-title').textContent = `Time Until ${titleStr}`;
 };
@@ -70,13 +73,23 @@ const setCountdown = (e) => {
     e.preventDefault();
     const countdownTitle = countdownForm.elements['title-input'].value;
     const countdownDate = countdownForm.elements['date-input'].value;
-
-    populateCountdown(countdownDate);
+    
     updateTitle(countdownTitle);
+    populateCountdown(countdownDate);
     
     // Hide Form & Show Countdown Clock
     inputContainer.hidden = true;
     countdownContainer.hidden = false;
+};
+
+const resetCountdown = (e) => {
+    e.preventDefault();
+
+    // Show Form & Hide Countdown Clock
+    inputContainer.hidden = false;
+    countdownContainer.hidden = true;
+
+    clearInterval(countdownActive);
 };
 
 // Event Listeners
@@ -84,8 +97,4 @@ const submitBtn = countdownForm.elements['submit-btn'];
 submitBtn.addEventListener('click', setCountdown);
 
 const resetBtn = document.getElementById('countdown-button');
-resetBtn.addEventListener('click', () => {
-    // Show Form & Hide Countdown Clock
-    inputContainer.hidden = false;
-    countdownContainer.hidden = true;
-});
+resetBtn.addEventListener('click', resetCountdown);
