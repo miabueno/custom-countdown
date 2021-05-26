@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400&display=swap');
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  background-image: linear-gradient(#668ce3, #431b80);
+  /* background-image: url('https://www.thesprucepets.com/thmb/COdGzNriu8oQVi8igXmSzFzXTRk=/2109x2109/smart/filters:no_upscale()/puppy-samoyed-boy-990077480-5c89719646e0fb00012c67e8.jpg'); */
+  margin: 0;
+  min-height: 100vh;
+  overflow-y: hidden;
+  display: flex;
+  align-items: center;
+  font-family: 'Rubik', sans-serif;
+}
+
+/* Container */
+.container {
+  background: rgba(255, 255, 255, 0.5);
+  min-width: 580px;
+  min-height: 304px;
+  color: black;
+  margin: 0 auto;
+  padding: 25px 50px;
+  border-radius: 5px;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+}
+
+.input-container {
+  position: relative;
+  top: 20px;
+}
+
+h1 {
+  font-size: 35px;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+/* Form */
+.form {
+  width: 480px;
+}
+
+label {
+  font-weight: bold;
+  margin: 10px;
+}
+
+input {
+  width: 95%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #fff;
+  outline: none;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 300;
+}
+
+/* Button */
+button {
+  width: 100%;
+  height: 40px;
+  border-radius: 5px;
+  margin-top: 15px;
+  border: none;
+  text-transform: uppercase;
+  background: #0272b3;
+  color: white;
+  cursor: pointer;
+  outline: none;
+}
+
+button:hover {
+  filter: brightness(120%);
+}
+
+/* Countdown */
+ul {
+  margin-left: -45px;
+}
+
+li {
+  display: inline-block;
+  font-size: 30px;
+  list-style-type: none;
+  padding: 10px;
+  text-transform: uppercase;
+}
+
+li span {
+  display: block;
+  font-size: 80px;
+  text-align: center;
+}
+
+/* Complete */
+.complete {
+  position: relative;
+  top: 60px;
+}
+
+#complete-title {
+  animation: complete 2.5s infinite;
+}
+
+@keyframes complete {
+  0% {
+    color: rgb(255, 17, 0);
+  }
+
+  25% {
+    color: rgb(255, 196, 0);
+  }
+
+  50% {
+    color: rgb(12, 233, 123);
+    transform: scale(1.5);
+  }
+
+  75% {
+    color: rgb(0, 89, 255);
+  }
+
+  100% {
+    color: rgb(140, 0, 255);
+  }
+}
+
+/* Media Query: Large Smartphone (Vertical) */
+@media screen and (max-width: 600px) {
+
+  .container {
+    min-width: unset;
+    width: 95vw;
+    min-height: 245px;
+    padding: 20px;
+    margin: 10px;
+  }
+
+  .input-container {
+    top: unset;
+  }
+
+  .countdown {
+    position: relative;
+    top: 10px;
+  }
+
+  .form {
+    width: unset;
+  }
+
+  input {
+    width: 93%;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  li {
+    font-size: 15px;
+  }
+
+  li span {
+    font-size: 40px;
+  }
+}
+
+/* Video Background */
+/* .video-background {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+
+}
+
+video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.video-overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+
+} */
