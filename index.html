@@ -13,25 +13,25 @@
         <!-- Input -->
         <div class="input-container" id="input-container">
             <h1>Create a Custom Countdown!</h1>
-            <form class="form" action="" id="countdown-form">
+            <form class="form" action="" name="countdown-form" id="countdown-form">
                 <label for="title">Title</label>
-                <input type="text" id="title" placeholder="What are you counting down to?">
+                <input type="text" id="title" name="title-input" placeholder="What are you counting down to?">
 
                 <label for="date-picker">Select a Date</label>
-                <input type="date" id="date-picker">
+                <input type="date" id="date-picker" name="date-input">
 
-                <button type="submit">Submit</button>
+                <button type="submit" name="submit-btn">Submit</button>
             </form>
         </div>
 
         <!-- Countdown -->
         <div class="countdown" id="countdown" hidden>
-            <h1 id="countdown-title">Countdown Title Here</h1>
+            <h1 id="countdown-title"></h1>
             <ul>
-                <li><span>3</span>Days</li>
-                <li><span>6</span>Hours</li>
-                <li><span>45</span>Minutes</li>
-                <li><span>52</span>Seconds</li>
+                <li><span></span>Days</li>
+                <li><span></span>Hours</li>
+                <li><span></span>Minutes</li>
+                <li><span></span>Seconds</li>
             </ul>
             <button id="countdown-button">Reset</button>
         </div>
