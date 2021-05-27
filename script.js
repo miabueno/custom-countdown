@@ -66,6 +66,7 @@ const populateCountdown = (dateStr, timeStr) => {
             completeBtn.addEventListener('click', () => {
                 completeRender.hidden = true;
                 inputRender.hidden = false;
+                localStorage.removeItem('countdown');
             });
         }
 
@@ -91,22 +92,29 @@ const setCountdown = (e) => {
     const countdownTime = countdownForm.elements['time-input'].value;
     
     if (!countdownDate) {
-        alert('Please enter a valid date');
+        return alert('Please enter a valid date');
     } else if (!countdownTime) {
-        alert('Please enter a valid time');
+        return alert('Please enter a valid time');
     } 
     
     const futureDateTimeStr = `${countdownDate}T${countdownTime}:00`;
     const futureDateTimeMsec = new Date(futureDateTimeStr).getTime();
-
     const { days, hours, minutes, seconds } = calculateRemainingTime(futureDateTimeMsec);
 
     if (days < 0 && hours < 0 && minutes < 0 && seconds < 0) {
         alert('Please enter a date time in the future');
     } else {
+
+        const savedCountdown = {
+            title: countdownTitle,
+            date: countdownDate,
+            time: countdownTime,
+        };
+        localStorage.setItem('countdown', JSON.stringify(savedCountdown));
+    
         updateTitle(countdownTitle);
         populateCountdown(countdownDate, countdownTime);
-        
+
         // Hide Form & Show Countdown Clock
         inputRender.hidden = true;
         countdownRender.hidden = false;
@@ -121,6 +129,7 @@ const resetCountdown = (e) => {
     countdownRender.hidden = true;
 
     clearInterval(countdownActive);
+    localStorage.removeItem('countdown');
 };
 
 // Event Listeners
@@ -129,3 +138,17 @@ submitBtn.addEventListener('click', setCountdown);
 
 const resetBtn = document.getElementById('countdown-button');
 resetBtn.addEventListener('click', resetCountdown);
+
+// Check if countdown saved
+if (localStorage.getItem('countdown')) {
+    // Show Countdown
+    inputRender.hidden = true;
+    countdownRender.hidden = false;
+
+    // Get saved data
+    const {title, date, time} = JSON.parse(localStorage.getItem('countdown'));
+    
+    // Pre-populate countdown data
+    updateTitle(title);
+    populateCountdown(date, time);
+}
