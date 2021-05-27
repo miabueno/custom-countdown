@@ -6,10 +6,6 @@ const completeRender = document.getElementById('complete');
 // Form Element
 const countdownForm = document.forms['countdown-form'];
 
-// Complete Elements
-const completeInfo = document.getElementById('complete-info');
-const completeBtn = document.getElementById('complete-button');
-
 // Time Interval Status
 let countdownActive;
 
@@ -59,13 +55,26 @@ const populateCountdown = (dateStr, timeStr) => {
     countdownActive = setInterval(() => {
         const { days, hours, minutes, seconds } = calculateRemainingTime(futureDateTimeMsec);
 
+        if (days < 0 && hours < 0 && minutes < 0 && seconds < 0) {
+            clearInterval(countdownActive);
+
+            countdownRender.hidden = true;
+            completeRender.hidden = false;
+            
+            // Complete Elements
+            const completeBtn = document.getElementById('complete-button');
+            completeBtn.addEventListener('click', () => {
+                completeRender.hidden = true;
+                inputRender.hidden = false;
+            });
+        }
+
         const timeElements = document.getElementsByTagName('span');
         timeElements[0].textContent = `${days}`;
         timeElements[1].textContent = (hours < 10) ? `0${hours}` :`${hours}`;
         timeElements[2].textContent = (minutes < 10) ? `0${minutes}` :`${minutes}`;
         timeElements[3].textContent = (seconds < 10) ? `0${seconds}` : `${seconds}`;
 
-        console.log(days, hours, minutes, seconds);
     }, 1000);
 };
 
@@ -80,13 +89,20 @@ const setCountdown = (e) => {
     const countdownTitle = countdownForm.elements['title-input'].value;
     const countdownDate = countdownForm.elements['date-input'].value;
     const countdownTime = countdownForm.elements['time-input'].value;
-
-    console.log(countdownTime);
     
     if (!countdownDate) {
         alert('Please enter a valid date');
     } else if (!countdownTime) {
         alert('Please enter a valid time');
+    } 
+    
+    const futureDateTimeStr = `${countdownDate}T${countdownTime}:00`;
+    const futureDateTimeMsec = new Date(futureDateTimeStr).getTime();
+
+    const { days, hours, minutes, seconds } = calculateRemainingTime(futureDateTimeMsec);
+
+    if (days < 0 && hours < 0 && minutes < 0 && seconds < 0) {
+        alert('Please enter a date time in the future');
     } else {
         updateTitle(countdownTitle);
         populateCountdown(countdownDate, countdownTime);
