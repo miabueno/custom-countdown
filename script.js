@@ -1,9 +1,14 @@
-// DOM Element Containers to switch with hidden attributes
-const inputContainer = document.getElementById('input-container');
-const countdownContainer = document.getElementById('countdown');
+// DOM Element Render to switch with hidden attributes
+const inputRender = document.getElementById('input-container');
+const countdownRender = document.getElementById('countdown');
+const completeRender = document.getElementById('complete');
 
 // Form Element
 const countdownForm = document.forms['countdown-form'];
+
+// Complete Elements
+const completeInfo = document.getElementById('complete-info');
+const completeBtn = document.getElementById('complete-button');
 
 // Time Interval Status
 let countdownActive;
@@ -46,18 +51,19 @@ const calculateRemainingTime = (futureDateMsec) => {
 };
 
 // Handle Countdown Values + Update DOM
-const populateCountdown = (dateStr) => {
-    const futureDate = new Date(dateStr);
-    const futureDateMsec = futureDate.getTime();
+const populateCountdown = (dateStr, timeStr) => {
+    const dateTimeStr = `${dateStr}T${timeStr}:00`;
+    const futureDateTime = new Date(dateTimeStr);
+    const futureDateTimeMsec = futureDateTime.getTime();
 
     countdownActive = setInterval(() => {
-        const { days, hours, minutes, seconds } = calculateRemainingTime(futureDateMsec);
+        const { days, hours, minutes, seconds } = calculateRemainingTime(futureDateTimeMsec);
 
         const timeElements = document.getElementsByTagName('span');
         timeElements[0].textContent = `${days}`;
-        timeElements[1].textContent = `${hours}`;
-        timeElements[2].textContent = `${minutes}`;
-        timeElements[3].textContent = `${seconds}`;
+        timeElements[1].textContent = (hours < 10) ? `0${hours}` :`${hours}`;
+        timeElements[2].textContent = (minutes < 10) ? `0${minutes}` :`${minutes}`;
+        timeElements[3].textContent = (seconds < 10) ? `0${seconds}` : `${seconds}`;
 
         console.log(days, hours, minutes, seconds);
     }, 1000);
@@ -65,7 +71,7 @@ const populateCountdown = (dateStr) => {
 
 // Handle Title + Update DOM
 const updateTitle = (titleStr) => {
-    document.getElementById('countdown-title').textContent = `Time Until ${titleStr}`;
+    document.getElementById('countdown-title').textContent = `${titleStr}`;
 };
 
 // Submit Values from Form Input
@@ -73,21 +79,30 @@ const setCountdown = (e) => {
     e.preventDefault();
     const countdownTitle = countdownForm.elements['title-input'].value;
     const countdownDate = countdownForm.elements['date-input'].value;
+    const countdownTime = countdownForm.elements['time-input'].value;
+
+    console.log(countdownTime);
     
-    updateTitle(countdownTitle);
-    populateCountdown(countdownDate);
-    
-    // Hide Form & Show Countdown Clock
-    inputContainer.hidden = true;
-    countdownContainer.hidden = false;
+    if (!countdownDate) {
+        alert('Please enter a valid date');
+    } else if (!countdownTime) {
+        alert('Please enter a valid time');
+    } else {
+        updateTitle(countdownTitle);
+        populateCountdown(countdownDate, countdownTime);
+        
+        // Hide Form & Show Countdown Clock
+        inputRender.hidden = true;
+        countdownRender.hidden = false;
+    }
 };
 
 const resetCountdown = (e) => {
     e.preventDefault();
 
     // Show Form & Hide Countdown Clock
-    inputContainer.hidden = false;
-    countdownContainer.hidden = true;
+    inputRender.hidden = false;
+    countdownRender.hidden = true;
 
     clearInterval(countdownActive);
 };
